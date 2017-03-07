@@ -14,14 +14,14 @@ module.exports = function (config) {
       'node_modules/zone.js/dist/jasmine-patch.js',
       'node_modules/zone.js/dist/async-test.js',
       'node_modules/zone.js/dist/fake-async-test.js',
-      { pattern: 'restangular.spec.ts', watched: false }
+      { pattern: 'test/**/*.spec.ts', watched: false }
     ],
 
     // list of files / patterns to exclude
     exclude: [],
 
     preprocessors: {
-      'restangular.spec.ts': ['webpack', 'sourcemap']
+      'test/**/*.spec.ts': ['webpack', 'sourcemap']
     },
 
 
@@ -70,8 +70,7 @@ module.exports = function (config) {
           // instrument only testing sources with Istanbul
           {
             test: /\.ts$/,
-            exclude: /(node_modules|resources\/js\/vendor)/,
-            // include: path.resolve('src/'),
+            exclude: /(node_modules|test)/,
             loader: 'istanbul-instrumenter-loader'
           }
         ]

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Config } from './src/config';
-import { Path } from './src/path';
-import { AllPath } from './src/all-path';
-import { OnePath } from './src/one-path';
-import { PathInterface } from './src/path.interface';
+import { Config } from './config';
+import { Path } from './path';
+import { AllPath } from './all-path';
+import { OnePath } from './one-path';
+import { PathInterface } from './path.interface';
 
 @Injectable()
-export class BaseRestangular {
+export class Restangular {
   config: Config;
   path: Path;
   route: PathInterface;

@@ -15,11 +15,10 @@
         ],
         "moduleResolution":"node"
     },
-    // "files": [
-    //     "./src/**/*.ts",
-    //     "restangular.ts",
-    //     "restangular.spec.ts"
-    // ],
+    "files": [
+        "./src/restangular.ts",
+        "./test/restangular.spec.ts"
+    ],
     "exclude": [
         "node_modules"
     ]

@@ -5,7 +5,8 @@ import {
 import { TestBed, getTestBed, async, inject } from '@angular/core/testing';
 import { Http, HttpModule, XHRBackend, Response, ResponseOptions, BaseRequestOptions } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
-import { BaseRestangular } from './restangular';
+// import { Restangular } from '../restangular';
+import { Restangular } from '../src/restangular';
 
 describe('Restangular', () => {
 
@@ -22,7 +23,7 @@ describe('Restangular', () => {
     TestBed.configureTestingModule({
       imports: [HttpModule],
       providers: [
-        BaseRestangular,
+        Restangular,
         { provide: XHRBackend, useClass: MockBackend },
       ]
     });
@@ -30,7 +31,7 @@ describe('Restangular', () => {
 
   describe('RestangularConfig', () => {
     describe('isAbsoluteUrl', () => {
-      it('Return true if is a absolute URL', inject([BaseRestangular], (restangular: BaseRestangular) => {
+      it('Return true if is a absolute URL', inject([Restangular], (restangular: Restangular) => {
         let b = restangular.all('companies');
 
         expect(b.route).not.toEqual(restangular.path.route);
@@ -38,21 +39,21 @@ describe('Restangular', () => {
         expect(b.parent).toEqual(restangular.path);
       }));
 
-      it('Return true if is a absolute URL', inject([BaseRestangular], (restangular: BaseRestangular) => {
+      it('Return true if is a absolute URL', inject([Restangular], (restangular: Restangular) => {
         let b = restangular.all('/companies').one('videos', 1);
 
         expect(restangular.path.toArray()).toEqual(['']);
         expect(b.toArray()).toEqual(['', 'companies', 'videos', '1']);
       }));
 
-      it('Return true if is a absolute URL', inject([BaseRestangular], (restangular: BaseRestangular) => {
+      it('Return true if is a absolute URL', inject([Restangular], (restangular: Restangular) => {
         let b = restangular.all('companies').one('videos', 1);
 
         expect(restangular.path.toString()).toEqual('');
         expect(b.toString()).toEqual('/companies/videos/1');
       }));
 
-      it('Return true if is a absolute URL', inject([BaseRestangular], (restangular: BaseRestangular) => {
+      it('Return true if is a absolute URL', inject([Restangular], (restangular: Restangular) => {
         restangular.config.baseUrl = 'http://localhost/';
 
         let b = restangular.all('/companies').one('videos', 1);
@@ -61,7 +62,7 @@ describe('Restangular', () => {
         expect(b.toArray()).toEqual(['http://localhost', 'companies', 'videos', '1']);
       }));
 
-      it('Return true if is a absolute URL', inject([BaseRestangular], (restangular: BaseRestangular) => {
+      it('Return true if is a absolute URL', inject([Restangular], (restangular: Restangular) => {
         let b = restangular.all('companies').one('videos', 1);
         b.config.baseUrl = 'http://localhost/';
 
@@ -69,7 +70,7 @@ describe('Restangular', () => {
         expect(b.toString()).toEqual('http://localhost/companies/videos/1');
       }));
 
-      it('Return true if is a absolute URL', inject([BaseRestangular, XHRBackend], (restangular: BaseRestangular, mockBackend: MockBackend) => {
+      it('Return true if is a absolute URL', inject([Restangular, XHRBackend], (restangular: Restangular, mockBackend: MockBackend) => {
 
         let b = restangular.all('companies').one('videos', 1);
 
