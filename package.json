@@ -1,5 +1,6 @@
 {
-  "name": "ng-restangular",
+  "name": "rs-restangular",
+  "description": "Restful Resources service for Angular 2 apps",
   "version": "0.0.0",
   "repository": {
     "type": "git",
