@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RodolfoSilva/ng-restangular.git"
+    "url": "git+https://github.com/RodolfoSilva/rs-restangular.git"
   },
   "scripts": {
     "dev": "tsc --watch",
@@ -16,18 +16,20 @@
     "angular",
     "angular2",
     "rest",
+    "rs-restangular",
     "ng-restangular",
+    "ng2-restangular",
     "restangular"
   ],
   "author": "Rodolfo Silva",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RodolfoSilva/ng-restangular/issues"
+    "url": "https://github.com/RodolfoSilva/rs-restangular/issues"
   },
   "main": "restangular.js",
   "typings": "./dist/restangular.d.ts",
   "types": "./dist/restangular.d.ts",
-  "homepage": "https://github.com/RodolfoSilva/ng-restangular#readme",
+  "homepage": "https://github.com/RodolfoSilva/rs-restangular#readme",
   "devDependencies": {
     "@angular/common": "^2.4.2",
     "@angular/compiler": "^2.4.2",
