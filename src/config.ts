@@ -1,24 +1,40 @@
-import { Http } from '@angular/http';
+import { Path } from './path';
+import { Http, Headers, Request, Response } from '@angular/http';
+
+export type responseInterceptor = (res: any, operation?: string, path?: Path, url?: string, response?: Response) => any;
+export type requestInterceptor = (req: Request, operation?: string, path?: Path) => Request;
 
 export class Config {
-  private __baseUrl: string = '';
-  private __defaultHeaders: any = {};
+  private _baseUrl: string = '';
+  private _requestInterceptors: Array<requestInterceptor> = [];
+  private _responseInterceptors: Array<responseInterceptor> = [];
 
+  public defaultHeaders: Headers;
   public http: Http;
 
+  addResponseInterceptors(interceptor: responseInterceptor): Config {
+    this._responseInterceptors.push(interceptor);
+    return this;
+  }
+
+  addRequestInterceptors(interceptor: requestInterceptor): Config {
+    this._requestInterceptors.push(interceptor);
+    return this;
+  }
+
+  get responseInterceptors(): Array<responseInterceptor> {
+    return this._responseInterceptors;
+  }
+
+  get requestInterceptors(): Array<requestInterceptor> {
+    return this._requestInterceptors;
+  }
+
   set baseUrl(baseUrl: string) {
-    this.__baseUrl = baseUrl.replace(/\/$/g, '');
+    this._baseUrl = baseUrl.replace(/\/$/g, '');
   }
 
   get baseUrl(): string {
-    return this.__baseUrl;
-  }
-
-  set defaultHeaders(defaultHeaders: any) {
-    this.__defaultHeaders = Object.assign({}, defaultHeaders);
-  }
-
-  get defaultHeaders(): any {
-    return this.defaultHeaders;
+    return this._baseUrl;
   }
 }
