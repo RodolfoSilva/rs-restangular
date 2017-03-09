@@ -46,6 +46,14 @@ export class Path {
     return Backend.post(this, body, options);
   }
 
+  put(body: any, options?: RequestOptionsArgs): Observable<Response> {
+    return Backend.put(this, body, options);
+  }
+
+  remove(options?: RequestOptionsArgs): Observable<Response> {
+    return Backend.delete(this, options);
+  }
+
   toArray(): Array<string> {
     let path: Array<string> = [];
     let current: Path = this;
