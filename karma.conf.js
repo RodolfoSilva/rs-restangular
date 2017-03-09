@@ -58,6 +58,12 @@ module.exports = function (config) {
 
     reporters: ['progress', 'coverage'],
 
+    coverageReporter: {
+      type: 'lcov', // lcov or lcovonly are required for generating lcov.info files
+      dir: 'coverage/',
+      subdir: '.'
+    },
+
     webpack: {
       resolve: {
         extensions: ['', '.ts', '.js']
