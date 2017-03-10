@@ -42,13 +42,13 @@ This is all you need to start using all the basic Restangular features.
 import { NgModule } from '@angular/core';
 import { Headers } from '@angular/http';
 import { AppComponent } from './app.component';
-import { RestangularModule } from 'rs-restangular';
+import { RestangularConfig, RestangularModule } from 'rs-restangular';
 
 // Function for settting the default restangular configuration
-export function RestangularConfigFactory (RestangularConfig) {
-  RestangularConfig.baseUrl = 'http://api.restng2.local/v1';
-  RestangularConfig.defaultHeaders = new Headers({'Authorization': 'Bearer UDXPx-Xko0w4BRKajozCVy20X11MRZs1'});
-}
+export function RestangularConfigFactory (restangularConfig: RestangularConfig) {
+  restangularConfig.baseUrl = 'http://api.restng2.local/v1';
+  restangularConfig.defaultHeaders = new Headers({'Authorization': 'Bearer UDXPx-Xko0w4BRKajozCVy20X11MRZs1'});
+} 
 
 // AppModule is the main entry point into Angular2 bootstraping process
 @NgModule({
@@ -79,6 +79,43 @@ export class OtherComponent {
   }
 
 }
+````
+
+#### With dependecies 
+
+
+````javascript
+import { NgModule } from '@angular/core';
+import { Headers, Request } from '@angular/http';
+import { AppComponent } from './app.component';
+import { SessionService } from './auth/session.service';
+import { RestangularConfig, RestangularModule, RestangularPath } from 'rs-restangular';
+
+// Function for settting the default restangular configuration
+export function RestangularConfigFactory (restangularConfig: RestangularConfig, http: Http, sessionService: SessionService) {
+  restangularConfig.baseUrl = 'http://api.restng2.local/v1'; 
+
+  restangularConfig.addRequestInterceptors((req: Request, operation?: string, path?: RestangularPath): Request => {
+    req.headers.set('Authorization': `Bearer ${sessionService.token}`);
+
+    return req;
+  });
+} 
+
+// AppModule is the main entry point into Angular2 bootstraping process
+@NgModule({
+  bootstrap: [ AppComponent ],
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    SessionService,
+    // Importing RestangularModule and making default configs for restanglar
+    RestangularModule.forRoot(RestangularConfigFactory, [Http, SessionService]),
+  ]
+})
+export class AppModule {
+} 
 ````
 
 **[Back to top](#table-of-contents)**

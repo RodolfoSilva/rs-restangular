@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Headers, Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, Response } from '@angular/http';
-import { Config } from './config';
-import { Path } from './path';
+import { RestangularConfig } from './config';
+import { RestangularPath } from './path';
 
 import 'rxjs/add/operator/map';
 
@@ -21,9 +21,9 @@ export function mergeHeaders(headers: Headers, defaultHeaders: Headers): Headers
   return newHeaders;
 }
 
-export class Backend {
+export class RestangularHttp {
 
-  static interceptResponse(path: Path, operation: string, url: string): (value: any, index: number) => any {
+  static interceptResponse(path: RestangularPath, operation: string, url: string): (value: any, index: number) => any {
     return (res: Response, index: number) => {
       return (path.config.responseInterceptors || []).reduce((data: any, intercepor: any) => {
         return intercepor(data, operation, path, url, res);
@@ -31,7 +31,7 @@ export class Backend {
     }
   }
 
-  static makeRequest(operation: string, path: Path, requestArgs: RequestOptionsArgs, additionalOptions?: RequestOptionsArgs): Observable<Response> {
+  static makeRequest(operation: string, path: RestangularPath, requestArgs: RequestOptionsArgs, additionalOptions?: RequestOptionsArgs): Observable<Response> {
     let options = new RequestOptions(requestArgs);
 
     if (additionalOptions) {
@@ -45,60 +45,60 @@ export class Backend {
 
     request = path.config.requestInterceptors.reduce((req: Request, interceptor: any) => interceptor(req, operation, path), request);
 
-    return path.config.http.request(request).map(Backend.interceptResponse(path, operation, request.url));
+    return path.config.http.request(request).map(RestangularHttp.interceptResponse(path, operation, request.url));
   }
 
-  static get(path: Path, options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.makeRequest('get', path, {
+  static get(path: RestangularPath, options?: RequestOptionsArgs): Observable<Response> {
+    return RestangularHttp.makeRequest('get', path, {
       body: '',
       method: RequestMethod.Get
     }, options);
   }
 
-  static getList(path: Path, options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.makeRequest('getList', path, {
+  static getList(path: RestangularPath, options?: RequestOptionsArgs): Observable<Response> {
+    return RestangularHttp.makeRequest('getList', path, {
       body: '',
       method: RequestMethod.Get
     }, options);
   }
 
-  static post(path: Path, body: any, options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.makeRequest('post', path, {
+  static post(path: RestangularPath, body: any, options?: RequestOptionsArgs): Observable<Response> {
+    return RestangularHttp.makeRequest('post', path, {
       body: body,
       method: RequestMethod.Post
     }, options);
   }
 
-  static put(path: Path, body: any, options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.makeRequest('put', path, {
+  static put(path: RestangularPath, body: any, options?: RequestOptionsArgs): Observable<Response> {
+    return RestangularHttp.makeRequest('put', path, {
       body: body,
       method: RequestMethod.Put
     }, options);
   }
 
-  static delete(path: Path, options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.makeRequest('delete', path, {
+  static delete(path: RestangularPath, options?: RequestOptionsArgs): Observable<Response> {
+    return RestangularHttp.makeRequest('delete', path, {
       body: '',
       method: RequestMethod.Delete
     }, options);
   }
 
-  static patch(path: Path, body: any, options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.makeRequest('patch', path, {
+  static patch(path: RestangularPath, body: any, options?: RequestOptionsArgs): Observable<Response> {
+    return RestangularHttp.makeRequest('patch', path, {
       body: body,
       method: RequestMethod.Patch
     }, options);
   }
 
-  static head(path: Path, options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.makeRequest('head', path, {
+  static head(path: RestangularPath, options?: RequestOptionsArgs): Observable<Response> {
+    return RestangularHttp.makeRequest('head', path, {
       body: '',
       method: RequestMethod.Head
     }, options);
   }
 
-  static options(path: Path, options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.makeRequest('options', path, {
+  static options(path: RestangularPath, options?: RequestOptionsArgs): Observable<Response> {
+    return RestangularHttp.makeRequest('options', path, {
       body: '',
       method: RequestMethod.Options
     }, options);

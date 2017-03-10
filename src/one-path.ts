@@ -1,5 +1,5 @@
 import { PathInterface } from './path.interface';
-export class OnePath implements PathInterface {
+export class RestangularOnePath implements PathInterface {
   public primaryKey: string;
 
   constructor(
