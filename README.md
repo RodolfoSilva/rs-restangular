@@ -10,7 +10,7 @@ This project is the follow-up of the [Restangular](https://github.com/RodolfoSil
 
 # Table of contents
 
-- [Restangular](#restangular)
+- [Restangular](#ng-restangular)
 - [How do I add this to my project?](#how-do-i-add-this-to-my-project)
 - [Dependencies](#dependencies)
 - [Starter Guide](#starter-guide)
@@ -21,7 +21,7 @@ This project is the follow-up of the [Restangular](https://github.com/RodolfoSil
 
 You can download this by:
 
-* Using npm and running `npm install ng2-restangular`
+* Using npm and running `npm install rs-restangular`
 
 **[Back to top](#table-of-contents)**
 
