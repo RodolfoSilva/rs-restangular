@@ -1,19 +1,19 @@
-import { Backend } from './backend';
+import { RestangularHttp } from './http';
 import { Response, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Config } from './config';
-import { OnePath } from './one-path';
-import { AllPath } from './all-path';
+import { RestangularConfig } from './config';
+import { RestangularOnePath } from './one-path';
+import { RestangularAllPath } from './all-path';
 import { PathInterface } from './path.interface';
 
 import 'rxjs/add/operator/map';
 
-export class Path {
-  config: Config;
-  parent: Path;
+export class RestangularPath {
+  config: RestangularConfig;
+  parent: RestangularPath;
   route: PathInterface;
 
-  constructor(config: Config, parent?: Path) {
+  constructor(config: RestangularConfig, parent?: RestangularPath) {
     this.config = config;
     this.parent = parent;
   }
@@ -22,41 +22,41 @@ export class Path {
     return route.replace(/^\/+|\/+$/g, '');
   }
 
-  all(route: string): Path {
-    this.route = new AllPath(this.__normalizeRoute(route));
+  all(route: string): RestangularPath {
+    this.route = new RestangularAllPath(this.__normalizeRoute(route));
 
-    return new Path(this.config, this);
+    return new RestangularPath(this.config, this);
   }
 
-  one(route: string, id: string | number): Path {
-    this.route = new OnePath(this.__normalizeRoute(route), id);
+  one(route: string, id: string | number): RestangularPath {
+    this.route = new RestangularOnePath(this.__normalizeRoute(route), id);
 
-    return new Path(this.config, this);
+    return new RestangularPath(this.config, this);
   }
 
   get(options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.get(this, options);
+    return RestangularHttp.get(this, options);
   }
 
   getList(options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.getList(this, options);
+    return RestangularHttp.getList(this, options);
   }
 
   post(body: any, options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.post(this, body, options);
+    return RestangularHttp.post(this, body, options);
   }
 
   put(body: any, options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.put(this, body, options);
+    return RestangularHttp.put(this, body, options);
   }
 
   remove(options?: RequestOptionsArgs): Observable<Response> {
-    return Backend.delete(this, options);
+    return RestangularHttp.delete(this, options);
   }
 
   toArray(): Array<string> {
     let path: Array<string> = [];
-    let current: Path = this;
+    let current: RestangularPath = this;
 
     while (current.parent) {
       path.push(...current.parent.route.path().reverse());

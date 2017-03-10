@@ -1,25 +1,26 @@
 {
-    "compilerOptions": {
-        "mapRoot": "./",
-        "noImplicitAny": true,
-        "module": "commonjs",
-        "target": "es5",
-        "outDir": "../dist",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "sourceMap": true,
-        "declaration": true,
-        "lib": [
-            "dom",
-            "es2016"
-        ],
-        "moduleResolution":"node"
-    },
-    "files": [
-        "./src/restangular.ts",
-        "./test/restangular.spec.ts"
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es2016"
     ],
-    "exclude": [
-        "node_modules"
-    ]
+    "mapRoot": "./",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "../dist",
+    "sourceMap": true,
+    "target": "es5"
+  },
+  "files": [
+    "./src/restangular.ts",
+    "./src/restangular.module.ts",
+    "./test/restangular.spec.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

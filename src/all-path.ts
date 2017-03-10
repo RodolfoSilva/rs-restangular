@@ -1,5 +1,5 @@
 import { PathInterface } from './path.interface';
-export class AllPath implements PathInterface {
+export class RestangularAllPath implements PathInterface {
   constructor(
     public endpoint: string
   ) { }

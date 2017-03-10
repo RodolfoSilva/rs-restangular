@@ -10,10 +10,11 @@ This project is the follow-up of the [Restangular](https://github.com/RodolfoSil
 
 # Table of contents
 
-- [Restangular](#restangular)
+- [Restangular](#ng-restangular)
 - [How do I add this to my project?](#how-do-i-add-this-to-my-project)
 - [Dependencies](#dependencies)
 - [Starter Guide](#starter-guide)
+  - [Quick configuration for Lazy Readers](#quick-configuration-for-lazy-readers)
   - [URL Building](#url-building)
 - [License](#license)
 
@@ -21,7 +22,7 @@ This project is the follow-up of the [Restangular](https://github.com/RodolfoSil
 
 You can download this by:
 
-* Using npm and running `npm install ng2-restangular`
+* Using npm and running `npm install rs-restangular`
 
 **[Back to top](#table-of-contents)**
 
@@ -32,6 +33,92 @@ Restangular depends on Angular2
 **[Back to top](#table-of-contents)**
 
 ## Starter Guide
+
+### Quick Configuration (For Lazy Readers)
+This is all you need to start using all the basic Restangular features.
+
+
+````javascript
+import { NgModule } from '@angular/core';
+import { Headers } from '@angular/http';
+import { AppComponent } from './app.component';
+import { RestangularConfig, RestangularModule } from 'rs-restangular';
+
+// Function for settting the default restangular configuration
+export function RestangularConfigFactory (restangularConfig: RestangularConfig) {
+  restangularConfig.baseUrl = 'http://api.restng2.local/v1';
+  restangularConfig.defaultHeaders = new Headers({'Authorization': 'Bearer UDXPx-Xko0w4BRKajozCVy20X11MRZs1'});
+} 
+
+// AppModule is the main entry point into Angular2 bootstraping process
+@NgModule({
+  bootstrap: [ AppComponent ],
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    // Importing RestangularModule and making default configs for restanglar
+    RestangularModule.forRoot(RestangularConfigFactory),
+  ]
+})
+export class AppModule {
+}
+
+// later in code ...
+
+@Component({
+  ...
+})
+export class OtherComponent {
+  constructor(private restangular: Restangular) {
+  }
+
+  ngOnInit() {
+    // GET http://api.test.local/v1/users/2/accounts
+    this.restangular.one('users', 2).all('accounts').getList();
+  }
+
+}
+````
+
+#### With dependecies 
+
+
+````javascript
+import { NgModule } from '@angular/core';
+import { Headers, Request } from '@angular/http';
+import { AppComponent } from './app.component';
+import { SessionService } from './auth/session.service';
+import { RestangularConfig, RestangularModule, RestangularPath } from 'rs-restangular';
+
+// Function for settting the default restangular configuration
+export function RestangularConfigFactory (restangularConfig: RestangularConfig, http: Http, sessionService: SessionService) {
+  restangularConfig.baseUrl = 'http://api.restng2.local/v1'; 
+
+  restangularConfig.addRequestInterceptors((req: Request, operation?: string, path?: RestangularPath): Request => {
+    req.headers.set('Authorization': `Bearer ${sessionService.token}`);
+
+    return req;
+  });
+} 
+
+// AppModule is the main entry point into Angular2 bootstraping process
+@NgModule({
+  bootstrap: [ AppComponent ],
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    SessionService,
+    // Importing RestangularModule and making default configs for restanglar
+    RestangularModule.forRoot(RestangularConfigFactory, [Http, SessionService]),
+  ]
+})
+export class AppModule {
+} 
+````
+
+**[Back to top](#table-of-contents)**
 
 ### URL Building
 Sometimes, we have a lot of nested entities (and their IDs), but we just want the last child. In those cases, doing a request for everything to get the last child is overkill. For those cases, I've added the possibility to create URLs using the same API as creating a new Restangular object. This connections are created without making any requests. Let's see how to do this:

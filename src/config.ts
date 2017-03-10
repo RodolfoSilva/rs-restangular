@@ -1,10 +1,10 @@
-import { Path } from './path';
+import { RestangularPath } from './path';
 import { Http, Headers, Request, Response } from '@angular/http';
 
-export type responseInterceptor = (res: any, operation?: string, path?: Path, url?: string, response?: Response) => any;
-export type requestInterceptor = (req: Request, operation?: string, path?: Path) => Request;
+export type responseInterceptor = (res: any, operation?: string, path?: RestangularPath, url?: string, response?: Response) => any;
+export type requestInterceptor = (req: Request, operation?: string, path?: RestangularPath) => Request;
 
-export class Config {
+export class RestangularConfig {
   private _baseUrl: string = '';
   private _requestInterceptors: Array<requestInterceptor> = [];
   private _responseInterceptors: Array<responseInterceptor> = [];
@@ -12,12 +12,12 @@ export class Config {
   public defaultHeaders: Headers;
   public http: Http;
 
-  addResponseInterceptors(interceptor: responseInterceptor): Config {
+  addResponseInterceptors(interceptor: responseInterceptor): RestangularConfig {
     this._responseInterceptors.push(interceptor);
     return this;
   }
 
-  addRequestInterceptors(interceptor: requestInterceptor): Config {
+  addRequestInterceptors(interceptor: requestInterceptor): RestangularConfig {
     this._requestInterceptors.push(interceptor);
     return this;
   }

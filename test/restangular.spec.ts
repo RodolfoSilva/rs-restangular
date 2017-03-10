@@ -1,4 +1,6 @@
-import { Path } from './../src/path';
+import { RestangularConfig, RestangularModule, Restangular } from './../src';
+import { RestangularPath } from './../src/path';
+import { RestangularFactory } from './../src/helpers';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
@@ -6,8 +8,10 @@ import {
 import { TestBed, getTestBed, async, inject } from '@angular/core/testing';
 import { Http, HttpModule, XHRBackend, Request, Response, ResponseOptions, BaseRequestOptions, RequestOptions, Headers, RequestMethod } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
-// import { Restangular } from '../restangular';
-import { Restangular } from '../src/restangular';
+
+export function RestangularConfigFactory (restangularConfig: RestangularConfig) {
+//  console.info("DDDDDDDD", restangularConfig);
+}
 
 describe('Restangular', () => {
 
@@ -20,16 +24,39 @@ describe('Restangular', () => {
   });
 
   beforeEach(() => {
-
     TestBed.configureTestingModule({
-      imports: [HttpModule],
+      imports: [
+        HttpModule,
+        RestangularModule.forRoot(RestangularConfigFactory, [Http])
+      ],
       providers: [
-        Restangular,
         { provide: XHRBackend, useClass: MockBackend },
       ]
     });
   });
 
+  describe('RestangularFactory', () => {
+    let http: Http = null;
+    let mockBackend: MockBackend = null;
+
+    beforeEach(inject([Http], (_http: Http) => {
+      http = _http;
+    }));
+
+    it('Factory to create Restangular instance', () => {
+      expect(RestangularFactory(http)).toEqual(jasmine.any(Restangular));
+    });
+
+    it('Factory to create Restangular instance', () => {
+      let factory: Function = jasmine.createSpy('factory');
+      let dependecies: Array<any> = ['a', 'b', 'c'];
+      let restangular: Restangular = RestangularFactory(http, factory, ...dependecies);
+
+      expect(restangular).toEqual(jasmine.any(Restangular));
+      expect(factory).toHaveBeenCalledWith(restangular.config, ...dependecies);
+    });
+
+  })
   describe('RestangularConfig', () => {
     describe('isAbsoluteUrl', () => {
       let restangular: Restangular = null;
@@ -83,11 +110,11 @@ describe('Restangular', () => {
 
         let request = restangular.all('companies').one('videos', 1);
 
-        request.config.addResponseInterceptors((data: any, operation: string, path: Path, url: string, response: Response) => {
+        request.config.addResponseInterceptors((data: any, operation: string, path: RestangularPath, url: string, response: Response) => {
           console.info("RESPONSE", operation, data, url, response);
           return data;
         })
-        request.config.addRequestInterceptors((req: Request, operation: string, path: Path) => {
+        request.config.addRequestInterceptors((req: Request, operation: string, path: RestangularPath) => {
           console.info("REQUEST", operation, req.url);
           return req;
         })
