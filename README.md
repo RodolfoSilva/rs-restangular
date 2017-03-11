@@ -15,12 +15,17 @@ This project is the follow-up of the [Restangular](https://github.com/RodolfoSil
 - [Dependencies](#dependencies)
 - [Starter Guide](#starter-guide)
   - [Quick configuration for Lazy Readers](#quick-configuration-for-lazy-readers)
+  - [Using Restangular](#using-restangular)
+    - [Creating Main Restangular object](#creating-main-restangular-object)
+    - [Let's code!](#lets-code)
   - [Configuring Restangular](#configuring-restangular)
     - [Properties](#properties)
       - [baseUrl](#baseurl)
       - [addRequestInterceptor](#addrequestinterceptor)
       - [addResponseInterceptor](#addresponseinterceptor)
       - [defaultHeaders](#defaultheaders)
+  - [Methods description](#methods-description)
+    - [Restangular methods](#restangular-methods)
   - [URL Building](#url-building)
 - [License](#license)
 
@@ -126,6 +131,52 @@ export class AppModule {
 
 **[Back to top](#table-of-contents)**
 
+## Using Restangular
+
+### Creating Main Restangular object
+
+There are 2 ways of creating a main Restangular object.
+The first one and most common one is by stating the main route of all requests.
+The second one is by stating the main route of all requests.
+
+````javascript
+// Only stating main route
+restangular.all('accounts');
+
+// Only stating main route
+restangular.one('accounts', 1234);
+````
+
+**[Back to top](#table-of-contents)**
+### Let's code!
+
+Now that we have our main Object let's start playing with it.
+
+````javascript
+// First way of creating a Restangular object. Just saying the base URL
+var baseAccounts = restangular.all('accounts');
+
+// This will query /accounts and return a Observable.
+baseAccounts.getList().subscribe((accounts: Array<any>) => {
+  allAccounts = accounts;
+});
+
+var newAccount = {
+  name: "Gonto's account"
+};
+
+// POST /accounts
+baseAccounts.post(newAccount);
+
+// Just ONE GET to /accounts/123/buildings/456
+restangular.one('accounts', 123).one('buildings', 456).get();
+
+// Just ONE GET to /accounts/123/buildings
+restangular.one('accounts', 123).getList('buildings');
+````
+
+**[Back to top](#table-of-contents)**
+
 ### Configuring Restangular
 
 #### Properties
@@ -197,6 +248,16 @@ You can set default Headers to be sent with every request. Send format: {header_
 // set default header "token"
 restangularConfig.defaultHeaders = new Headers({ token: "x-restangular" });
 ````
+
+**[Back to top](#table-of-contents)**
+
+### Methods description
+
+#### Restangular methods
+These are the methods that can be called on the Restangular object.
+* **one(route, id)**: This will create a new Restangular object that is just a pointer to one element with the route `route` and the specified id.
+* **all(route)**: This will create a new Restangular object that is just a pointer to a list of elements for the specified path.
+
 
 **[Back to top](#table-of-contents)**
 
