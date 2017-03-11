@@ -1,4 +1,4 @@
-# Ng-Restangular
+# RS-Restangular
 
 [![Build Status](https://travis-ci.org/RodolfoSilva/rs-restangular.svg?branch=master)](https://travis-ci.org/RodolfoSilva/rs-restangular)
 [![Coverage Status](https://coveralls.io/repos/github/RodolfoSilva/rs-restangular/badge.svg?branch=master)](https://coveralls.io/github/RodolfoSilva/rs-restangular?branch=master)
@@ -15,6 +15,12 @@ This project is the follow-up of the [Restangular](https://github.com/RodolfoSil
 - [Dependencies](#dependencies)
 - [Starter Guide](#starter-guide)
   - [Quick configuration for Lazy Readers](#quick-configuration-for-lazy-readers)
+  - [Configuring Restangular](#configuring-restangular)
+    - [Properties](#properties)
+      - [baseUrl](#baseurl)
+      - [addRequestInterceptor](#addrequestinterceptor)
+      - [addResponseInterceptor](#addresponseinterceptor)
+      - [defaultHeaders](#defaultheaders)
   - [URL Building](#url-building)
 - [License](#license)
 
@@ -116,6 +122,76 @@ export function RestangularConfigFactory (restangularConfig: RestangularConfig, 
 })
 export class AppModule {
 } 
+````
+
+**[Back to top](#table-of-contents)**
+
+### Configuring Restangular
+
+#### Properties
+Restangular comes with defaults for all of its properties but you can configure them. **So, if you don't need to configure something, there's no need to add the configuration.**
+You can set all these configurations in **`RestangularConfig` or `Restangular` service to change the global configuration**. Check the section on this later.
+
+**[Back to top](#table-of-contents)**
+
+##### baseUrl
+The base URL for all calls to your API. For example if your URL for fetching accounts is http://example.com/api/v1/accounts, then your baseUrl is `/api/v1`. The default baseUrl is an empty string which resolves to the same url that AngularJS is running, but you can also set an absolute url like `http://api.example.com/api/v1` if you need to set another domain.
+
+````javascript
+restangularConfig.baseUrl = 'http://api.example.com/api/v1'; 
+````
+
+**[Back to top](#table-of-contents)**
+
+##### addResponseInterceptor
+The responseInterceptor is called after we get each response from the server. It's a function that receives this arguments:
+
+* **data: any**: The data received got from the server
+* **operation: string**: The operation made. It'll be the HTTP method used except for a `GET` which returns a list of element which will return `getList` so that you can distinguish them.
+* **path: RestangularPath**: The model that's being requested. 
+* **url**: The relative URL being requested. For example: `/api/v1/accounts/123`
+* **response: Response**: Full server response including headers 
+
+Some of the use cases of the responseInterceptor are handling wrapped responses and enhancing response elements with more methods among others.
+
+The responseInterceptor must return the restangularized data element.
+
+````javascript
+// set default header "token"
+restangularConfig.addResponseInterceptor((res: any, operation?: string, path?: RestangularPath, url?: string, response?: Response) => {
+  console.log(res);
+  console.log(path.route);
+  return res;
+});
+````
+
+**[Back to top](#table-of-contents)**
+
+##### addRequestInterceptor
+The requestInterceptor is called before sending any data to the server. It's a function that must return the element to be requested. This function receives the following arguments:
+
+* **req: Request**: The element to send to the server.
+* **operation: string**: The operation made. It'll be the HTTP method used except for a `GET` which returns a list of element which will return `getList` so that you can distinguish them.
+* **path: RestangularPath**: The model that's being requested. 
+
+````javascript
+// set default header "token"
+restangularConfig.addRequestInterceptor((req: Request, operation?: string, path?: RestangularPath) => {
+  console.log(req.url);
+  console.log(path.route);
+  return req;
+});
+````
+
+**[Back to top](#table-of-contents)**
+
+##### defaultHeaders
+
+You can set default Headers to be sent with every request. Send format: {header_name: header_value}
+
+````javascript
+// set default header "token"
+restangularConfig.defaultHeaders = new Headers({ token: "x-restangular" });
 ````
 
 **[Back to top](#table-of-contents)**
