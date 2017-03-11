@@ -1,5 +1,5 @@
 import { RestangularPath } from './path';
-import { Http, Headers, Request, Response } from '@angular/http';
+import { Http, Headers, Request, Response, URLSearchParams } from '@angular/http';
 
 export type responseInterceptor = (res: any, operation?: string, path?: RestangularPath, url?: string, response?: Response) => any;
 export type requestInterceptor = (req: Request, operation?: string, path?: RestangularPath) => Request;
@@ -10,6 +10,8 @@ export class RestangularConfig {
   private _responseInterceptors: Array<responseInterceptor> = [];
 
   public defaultHeaders: Headers;
+  public defaultParams: URLSearchParams;
+
   public http: Http;
 
   addResponseInterceptors(interceptor: responseInterceptor): RestangularConfig {
