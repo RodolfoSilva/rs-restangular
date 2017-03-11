@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { Headers, Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, Response } from '@angular/http';
+import { Headers, Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { RestangularConfig } from './config';
 import { RestangularPath } from './path';
 
@@ -21,6 +21,15 @@ export function mergeHeaders(headers: Headers, defaultHeaders: Headers): Headers
   return newHeaders;
 }
 
+export function mergeSearch(params: URLSearchParams, defaultParams: URLSearchParams): URLSearchParams {
+  let newParams = new URLSearchParams();
+
+  newParams.setAll(defaultParams || new URLSearchParams());
+  newParams.setAll(params || new URLSearchParams());
+
+  return newParams;
+}
+
 export class RestangularHttp {
 
   static interceptResponse(path: RestangularPath, operation: string, url: string): (value: any, index: number) => any {
@@ -39,6 +48,7 @@ export class RestangularHttp {
     }
 
     options.headers = mergeHeaders(options.headers, path.config.defaultHeaders);
+    options.search = mergeSearch(options.search, path.config.defaultParams);
 
     let request: Request = new Request(options);
     request.url = path.toString();
