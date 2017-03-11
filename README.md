@@ -130,12 +130,12 @@ export class AppModule {
 
 #### Properties
 Restangular comes with defaults for all of its properties but you can configure them. **So, if you don't need to configure something, there's no need to add the configuration.**
-You can set all these configurations in **`RestangularConfig` or `Restangular` service to change the global configuration**. Check the section on this later.
+You can set all these configurations in **`Restangular.config: RestangularConfig` service to change the global configuration**. Check the section on this later.
 
 **[Back to top](#table-of-contents)**
 
 ##### baseUrl
-The base URL for all calls to your API. For example if your URL for fetching accounts is http://example.com/api/v1/accounts, then your baseUrl is `/api/v1`. The default baseUrl is an empty string which resolves to the same url that AngularJS is running, but you can also set an absolute url like `http://api.example.com/api/v1` if you need to set another domain.
+The base URL for all calls to your API. For example if your URL for fetching accounts is http://example.com/api/v1/accounts, then your baseUrl is `/api/v1`. The default baseUrl is an empty string which resolves to the same url that Angular 2 is running, but you can also set an absolute url like `http://api.example.com/api/v1` if you need to set another domain.
 
 ````javascript
 restangularConfig.baseUrl = 'http://api.example.com/api/v1'; 
@@ -146,11 +146,13 @@ restangularConfig.baseUrl = 'http://api.example.com/api/v1';
 ##### addResponseInterceptor
 The responseInterceptor is called after we get each response from the server. It's a function that receives this arguments:
 
-* **data: any**: The data received got from the server
-* **operation: string**: The operation made. It'll be the HTTP method used except for a `GET` which returns a list of element which will return `getList` so that you can distinguish them.
-* **path: RestangularPath**: The model that's being requested. 
-* **url**: The relative URL being requested. For example: `/api/v1/accounts/123`
-* **response: Response**: Full server response including headers 
+| Param     | Type            | Description                                                                                                                                                         |
+| ----------| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| data      | any             | The data received got from the server                                                                                                                               |
+| operation | string          | The operation made. It'll be the HTTP method used except for a `GET` which returns a list of element which will return  `getList` so that you can distinguish them. |
+| path      | RestangularPath | The model that's being requested.                                                                                                                                   |
+| response  | Response        | Full server response including headers                                                                                                                              |
+
 
 Some of the use cases of the responseInterceptor are handling wrapped responses and enhancing response elements with more methods among others.
 
@@ -170,9 +172,11 @@ restangularConfig.addResponseInterceptor((res: any, operation?: string, path?: R
 ##### addRequestInterceptor
 The requestInterceptor is called before sending any data to the server. It's a function that must return the element to be requested. This function receives the following arguments:
 
-* **req: Request**: The element to send to the server.
-* **operation: string**: The operation made. It'll be the HTTP method used except for a `GET` which returns a list of element which will return `getList` so that you can distinguish them.
-* **path: RestangularPath**: The model that's being requested. 
+| Param     | Type            | Description                                                                                                                                                         |
+| ----------| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| req       | Request         | The element to send to the server.                                                                                                                                  |
+| operation | string          | The operation made. It'll be the HTTP method used except for a `GET` which returns a list of element which will return  `getList` so that you can distinguish them. |
+| path      | RestangularPath | The model that's being requested.                                                                                                                                   |
 
 ````javascript
 // set default header "token"
@@ -232,3 +236,4 @@ export class OtherComponent {
 This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
 
 **[Back to top](#table-of-contents)**
+s
