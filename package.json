@@ -1,7 +1,7 @@
 {
   "name": "rs-restangular",
   "description": "Restful Resources service for Angular 2 apps",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RodolfoSilva/rs-restangular.git"
@@ -28,8 +28,8 @@
     "url": "https://github.com/RodolfoSilva/rs-restangular/issues"
   },
   "main": "./dist/src/index.js",
-  "typings": "./dist/src/restangular.d.ts",
-  "types": "./dist/src/restangular.d.ts",
+  "typings": "./dist/src/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "homepage": "https://github.com/RodolfoSilva/rs-restangular#readme",
   "devDependencies": {
     "@angular/common": "^2.4.2",
