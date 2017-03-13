@@ -27,7 +27,7 @@
   "bugs": {
     "url": "https://github.com/RodolfoSilva/rs-restangular/issues"
   },
-  "main": "./dist/src/restangular.js",
+  "main": "./dist/src/index.js",
   "typings": "./dist/src/restangular.d.ts",
   "types": "./dist/src/restangular.d.ts",
   "homepage": "https://github.com/RodolfoSilva/rs-restangular#readme",
