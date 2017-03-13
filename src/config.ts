@@ -14,12 +14,12 @@ export class RestangularConfig {
 
   public http: Http;
 
-  addResponseInterceptors(interceptor: responseInterceptor): RestangularConfig {
+  addResponseInterceptor(interceptor: responseInterceptor): RestangularConfig {
     this._responseInterceptors.push(interceptor);
     return this;
   }
 
-  addRequestInterceptors(interceptor: requestInterceptor): RestangularConfig {
+  addRequestInterceptor(interceptor: requestInterceptor): RestangularConfig {
     this._requestInterceptors.push(interceptor);
     return this;
   }

@@ -130,10 +130,10 @@ describe('Restangular', () => {
 
       let request = restangular.all('companies').one('videos', 1);
 
-      request.config.addResponseInterceptors((data: any, operation: string, path: RestangularPath, url: string, response: Response) => {
+      request.config.addResponseInterceptor((data: any, operation: string, path: RestangularPath, url: string, response: Response) => {
         return data;
       })
-      request.config.addRequestInterceptors((req: Request, operation: string, path: RestangularPath) => {
+      request.config.addRequestInterceptor((req: Request, operation: string, path: RestangularPath) => {
         return req;
       })
 
