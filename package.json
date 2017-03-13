@@ -1,7 +1,7 @@
 {
   "name": "rs-restangular",
   "description": "Restful Resources service for Angular 2 apps",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RodolfoSilva/rs-restangular.git"
