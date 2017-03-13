@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/observable/of';
 import { RestangularPath } from './../src/path';
@@ -153,9 +152,10 @@ describe('Restangular HTTP', () => {
         let stub: jasmine.Spy = spyOn(RestangularHttp, 'makeRequest').and.returnValue(Observable.of(null));
 
         methods.forEach((method: any[]) => {
-          expect(RestangularHttp[method[0]]).toEqual(jasmine.any(Function), `Expect RestangularHttp has a ${method[0]} method`);
+          let classMethod: Function = (<any>RestangularHttp)[method[0]];
+          expect(classMethod).toEqual(jasmine.any(Function), `Expect RestangularHttp has a ${method[0]} method`);
 
-          let request = RestangularHttp[method[0]](path, null);
+          let request = classMethod(path, null);
 
           expect(request).toEqual(jasmine.any(Observable));
           expect(RestangularHttp.makeRequest).toHaveBeenCalledTimes(1);
@@ -178,13 +178,15 @@ describe('Restangular HTTP', () => {
         let stub: jasmine.Spy = spyOn(RestangularHttp, 'makeRequest').and.returnValue(Observable.of(null));
 
         methods.forEach((method: any[]) => {
-          expect(RestangularHttp[method[0]]).toEqual(jasmine.any(Function), `Expect RestangularHttp has a ${method[0]} method`);
+
+          let classMethod: Function = (<any>RestangularHttp)[method[0]];
+          expect(classMethod).toEqual(jasmine.any(Function), `Expect RestangularHttp has a ${method[0]} method`);
 
           let body: any = {
              id: Math.floor((Math.random() * 999) + 1)
           };
 
-          let request: any = RestangularHttp[method[0]](path, body, null);
+          let request: any = classMethod(path, body, null);
 
           expect(request).toEqual(jasmine.any(Observable));
           expect(RestangularHttp.makeRequest).toHaveBeenCalledTimes(1);
