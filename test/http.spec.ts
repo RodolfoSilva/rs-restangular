@@ -1,5 +1,10 @@
-import { URLSearchParams, Headers } from '@angular/http';
-import { mergeHeaders, mergeSearch } from '../src/http';
+import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/observable/of';
+import { RestangularPath } from './../src/path';
+import { Restangular } from './../src/restangular';
+import { URLSearchParams, Headers, RequestMethod } from '@angular/http';
+import { mergeHeaders, mergeSearch, RestangularHttp } from '../src/http';
 
 describe('Restangular HTTP', () => {
   describe('mergeHeaders', () => {
@@ -60,6 +65,137 @@ describe('Restangular HTTP', () => {
       expect(defaultParams.toString()).toEqual('apiKey=undefined');
       expect(params.toString()).toEqual('apiKey=UDXPx-Xko0w4BRKajozCVy20X11MRZs1');
       expect(mergedParams.toString()).toEqual('apiKey=UDXPx-Xko0w4BRKajozCVy20X11MRZs1');
+    });
+  });
+
+
+  describe('RestangularHttp', () => {
+    let path: any;
+
+    beforeEach(() => {
+      path = {
+        config: {
+          http: {
+            request: jasmine.createSpy('inteceptor_01').and.returnValue(Observable.of(null))
+          },
+          responseInterceptors: [
+            jasmine.createSpy('inteceptor_01').and.returnValue([]),
+            jasmine.createSpy('inteceptor_02').and.returnValue([]),
+          ],
+          requestInterceptors: [
+            jasmine.createSpy('inteceptor_01').and.returnValue([]),
+            jasmine.createSpy('inteceptor_02').and.returnValue([]),
+          ]
+        }
+      };
+    });
+
+    describe('interceptResponse', () => {
+      it('Should have a RestangularHttp.interceptResponse method', () => {
+        expect(RestangularHttp.interceptResponse).not.toBeUndefined();
+        expect(RestangularHttp.interceptResponse).toEqual(jasmine.any(Function));
+      });
+
+      it('Should return a function when is called', () => {
+        let interceptor = RestangularHttp.interceptResponse(null, 'get', '/videos');
+        expect(interceptor).toEqual(jasmine.any(Function));
+      });
+
+      it('Should execute interceptor', () => {
+        const res: any = {
+          json: jasmine.createSpy('json').and.returnValue([])
+        };
+
+        let interceptor = RestangularHttp.interceptResponse(path, 'get', '/videos');
+
+        interceptor(res, 1);
+
+        expect(res.json).toHaveBeenCalledTimes(1);
+        path.config.responseInterceptors.forEach((interceptor: any) => expect(interceptor).toHaveBeenCalledTimes(1))
+      });
+    });
+
+    describe('makeRequest', () => {
+      it('Should have a RestangularHttp.makeRequest method', () => {
+        expect(RestangularHttp.makeRequest).not.toBeUndefined();
+        expect(RestangularHttp.makeRequest).toEqual(jasmine.any(Function));
+      });
+
+      it('Should return a Observable when is called', () => {
+        let request = RestangularHttp.makeRequest(null, path, {
+          body: '',
+          method: RequestMethod.Get
+        });
+
+        expect(request).toEqual(jasmine.any(Observable));
+      });
+
+      it('Should return a Observable when is called with adicional arguments', () => {
+        let request = RestangularHttp.makeRequest(null, path, {
+          body: '',
+          method: RequestMethod.Get
+        }, {});
+
+        expect(request).toEqual(jasmine.any(Observable));
+      });
+    });
+
+    describe('Request methods', () => {
+      it('Should execute methods [get|getList|remove|head|options]', () => {
+        let methods: any[] = [
+          ['get', RequestMethod.Get],
+          ['getList', RequestMethod.Get],
+          ['remove', RequestMethod.Delete],
+          ['head', RequestMethod.Head],
+          ['options', RequestMethod.Options],
+        ];
+
+        let stub: jasmine.Spy = spyOn(RestangularHttp, 'makeRequest').and.returnValue(Observable.of(null));
+
+        methods.forEach((method: any[]) => {
+          expect(RestangularHttp[method[0]]).toEqual(jasmine.any(Function), `Expect RestangularHttp has a ${method[0]} method`);
+
+          let request = RestangularHttp[method[0]](path, null);
+
+          expect(request).toEqual(jasmine.any(Observable));
+          expect(RestangularHttp.makeRequest).toHaveBeenCalledTimes(1);
+          expect(RestangularHttp.makeRequest).toHaveBeenCalledWith(method[0], path, jasmine.objectContaining({
+            body: '',
+            method: method[1]
+          }), null);
+
+          stub.calls.reset();
+        });
+      });
+
+      it('Should execute methods [post|put|patch]', () => {
+        let methods: any[] = [
+          ['post', RequestMethod.Post],
+          ['put', RequestMethod.Put],
+          ['patch', RequestMethod.Patch],
+        ];
+
+        let stub: jasmine.Spy = spyOn(RestangularHttp, 'makeRequest').and.returnValue(Observable.of(null));
+
+        methods.forEach((method: any[]) => {
+          expect(RestangularHttp[method[0]]).toEqual(jasmine.any(Function), `Expect RestangularHttp has a ${method[0]} method`);
+
+          let body: any = {
+             id: Math.floor((Math.random() * 999) + 1)
+          };
+
+          let request: any = RestangularHttp[method[0]](path, body, null);
+
+          expect(request).toEqual(jasmine.any(Observable));
+          expect(RestangularHttp.makeRequest).toHaveBeenCalledTimes(1);
+          expect(RestangularHttp.makeRequest).toHaveBeenCalledWith(method[0], path, jasmine.objectContaining({
+            body: body,
+            method: method[1]
+          }), null);
+
+          stub.calls.reset();
+        });
+      });
     });
   });
 });

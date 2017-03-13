@@ -51,7 +51,7 @@ export class RestangularPath {
   }
 
   remove(options?: RequestOptionsArgs): Observable<Response> {
-    return RestangularHttp.delete(this, options);
+    return RestangularHttp.remove(this, options);
   }
 
   toArray(): Array<string> {
