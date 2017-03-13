@@ -28,8 +28,8 @@
     "url": "https://github.com/RodolfoSilva/rs-restangular/issues"
   },
   "main": "./dist/src/index.js",
-  "typings": "./dist/src/restangular.d.ts",
-  "types": "./dist/src/restangular.d.ts",
+  "typings": "./dist/src/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "homepage": "https://github.com/RodolfoSilva/rs-restangular#readme",
   "devDependencies": {
     "@angular/common": "^2.4.2",
